@@ -29,7 +29,7 @@ function Home() {
         <p>
           made with ♡ by{" "}
           <a
-            href="https://example.com"
+            href="https://angelazheng.ca"
             target="_blank"
             rel="noopener noreferrer"
             className="text-accent"
