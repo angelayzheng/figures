@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import Canvas from "../components/Canvas";
 
 function Draw() {
   useEffect(() => {
@@ -12,7 +13,7 @@ function Draw() {
 
   return (
     <section className="page-card">
-      <h1>Draw</h1>
+      <Canvas />
     </section>
   );
 }
