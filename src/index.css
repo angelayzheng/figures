@@ -1,7 +1,30 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inspiration&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
 
+@theme inline {
+  /* Fonts */
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+
+  /* Colors */
+  --color-bg: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-border: var(--color-border);
+  --color-text: var(--color-text);
+  --color-text-muted: var(--color-text-muted);
+  --color-text-inverse: var(--color-text-inverse);
+  --color-accent: var(--color-accent);
+  --color-accent-hover: var(--color-accent-hover);
+  --color-accent-soft: var(--color-accent-soft);
+  --color-success: var(--color-success);
+  --color-warning: var(--color-warning);
+  --color-danger: var(--color-danger);
+}
+
 :root {
+  --font-sans: "Inter", "Noto Sans", sans-serif;
+  --font-display: "Inspiration", cursive;
+
   --color-bg: #faf8fd;
   --color-surface: #ffffff;
   --color-border: #e2e8f0;
@@ -51,10 +74,4 @@ a {
 a:hover {
   color: var(--color-accent-hover);
   text-decoration: underline;
-}
-
-h1 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  font-weight: 600;
 }

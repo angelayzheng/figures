@@ -6,17 +6,17 @@ import "./App.css";
 
 function App() {
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <NavBar />
 
-      <main className="page-shell">
+      <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/draw" element={<Draw />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
-    </>
+    </div>
   );
 }
 
