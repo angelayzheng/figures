@@ -2,9 +2,11 @@ import {
   Arc2d,
   Group2d,
   HTMLContainer,
+  PathBuilder,
   type TLBaseShape,
   ShapeUtil,
   Vec,
+  type TLResizeInfo,
 } from "tldraw";
 
 type ThreeTurnShape = TLBaseShape<"three-turn", { w: number; h: number }>;
@@ -16,54 +18,62 @@ export class ThreeTurnShapeUtil extends ShapeUtil<any> {
   static override type = "three-turn" as const;
 
   getDefaultProps(): ThreeTurnShape["props"] {
-    return { w: 120, h: 100 };
+    return { w: 100, h: 300 };
   }
 
   getGeometry(shape: ThreeTurnShape) {
     const { w, h } = shape.props;
+    const startX = 0;
+    const startY = 0;
+    const control1X = w * 0.1;
+    const control1Y = h * 0.2;
+    const control2X = w * 0.1;
+    const control2Y = h * 0.45;
+    const middleX = 0;
+    const middleY = h * 0.5;
+    const control3X = control2X;
+    const control3Y = h - control2Y;
+    const control4X = control1X;
+    const control4Y = h - control1Y;
+    const endX = 0;
+    const endY = h;
 
-    const start = Vec.From({ x: w * 0.18, y: h * 0.78 });
-    const middle = Vec.From({ x: w * 0.5, y: h * 0.45 });
-    const end = Vec.From({ x: w * 0.82, y: h * 0.18 });
-
-    const firstArc = new Arc2d({
-      center: Vec.From({ x: w * 0.34, y: h * 0.62 }),
-      start,
-      end: middle,
-      sweepFlag: 0,
-      largeArcFlag: 0,
-    });
-
-    const secondArc = new Arc2d({
-      center: Vec.From({ x: w * 0.64, y: h * 0.3 }),
-      start: middle,
-      end,
-      sweepFlag: 0,
-      largeArcFlag: 0,
-    });
-
-    return new Group2d({ children: [firstArc, secondArc] });
+    return new PathBuilder()
+      .moveTo(startX, startY)
+      .cubicBezierTo(
+        middleX,
+        middleY,
+        control1X,
+        control1Y,
+        control2X,
+        control2Y,
+      )
+      .cubicBezierTo(endX, endY, control3X, control3Y, control4X, control4Y)
+      .toGeometry();
   }
 
   component(shape: ThreeTurnShape) {
     const { w, h } = shape.props;
-    const startX = w * 0.2;
-    const startY = h * 0.8;
-    const middleX = w * 0.5;
+    const startX = 0;
+    const startY = 0;
+    const control1X = w * 0.1;
+    const control1Y = h * 0.2;
+    const control2X = w * 0.1;
+    const control2Y = h * 0.45;
+    const middleX = 0;
     const middleY = h * 0.5;
-    const endX = w * 0.8;
-    const endY = h * 0.2;
-
-    const firstRadiusX = w * 0.16;
-    const firstRadiusY = h * 0.16;
-    const secondRadiusX = w * 0.16;
-    const secondRadiusY = h * 0.16;
+    const control3X = control2X;
+    const control3Y = h - control2Y;
+    const control4X = control1X;
+    const control4Y = h - control1Y;
+    const endX = 0;
+    const endY = h;
 
     return (
       <HTMLContainer style={{ width: w, height: h }}>
         <svg viewBox={`0 0 ${w} ${h}`} width="100%" height="100%">
           <path
-            d={`M ${startX} ${startY} A ${firstRadiusX} ${firstRadiusY} 0 0 0 ${middleX} ${middleY} A ${secondRadiusX} ${secondRadiusY} 0 0 0 ${endX} ${endY}`}
+            d={`M ${startX} ${startY} C ${control1X} ${control1Y} ${control2X} ${control2Y} ${middleX} ${middleY} M ${middleX} ${middleY} C ${control3X} ${control3Y} ${control4X} ${control4Y} ${endX} ${endY}`}
             stroke="currentColor"
             strokeWidth="2"
             fill="none"
@@ -74,9 +84,51 @@ export class ThreeTurnShapeUtil extends ShapeUtil<any> {
   }
 
   getIndicatorPath(shape: ThreeTurnShape) {
+    const { w, h } = shape.props;
+    const startX = 0;
+    const startY = 0;
+    const control1X = w * 0.1;
+    const control1Y = h * 0.2;
+    const control2X = w * 0.1;
+    const control2Y = h * 0.45;
+    const middleX = 0;
+    const middleY = h * 0.5;
+    const control3X = control2X;
+    const control3Y = h - control2Y;
+    const control4X = control1X;
+    const control4Y = h - control1Y;
+    const endX = 0;
+    const endY = h;
+
     const path = new Path2D();
-    path.rect(0, 0, shape.props.w, shape.props.h);
+    path.moveTo(startX, startY);
+    path.bezierCurveTo(
+      control1X,
+      control1Y,
+      control2X,
+      control2Y,
+      middleX,
+      middleY,
+    );
+    path.bezierCurveTo(control3X, control3Y, control4X, control4Y, endX, endY);
     return path;
+  }
+
+  onResize(shape: any, info: TLResizeInfo<any>) {
+    return {
+      props: {
+        w: shape.props.w * info.scaleX,
+        h: shape.props.h * info.scaleY,
+      },
+    };
+  }
+
+  onRotate(_initial: any, current: any) {
+    return {
+      id: current.id,
+      type: current.type,
+      rotation: current.rotation,
+    };
   }
 }
 
