@@ -9,7 +9,10 @@ import {
   type TLResizeInfo,
 } from "tldraw";
 
-type ThreeTurnShape = TLBaseShape<"three-turn", { w: number; h: number }>;
+type ThreeTurnShape = TLBaseShape<
+  "three-turn",
+  { w: number; h: number; thickness: number }
+>;
 type BracketShape = TLBaseShape<"bracket", { w: number; h: number }>;
 type RockerShape = TLBaseShape<"rocker", { w: number; h: number }>;
 type CounterShape = TLBaseShape<"counter", { w: number; h: number }>;
@@ -18,7 +21,7 @@ export class ThreeTurnShapeUtil extends ShapeUtil<any> {
   static override type = "three-turn" as const;
 
   getDefaultProps(): ThreeTurnShape["props"] {
-    return { w: 100, h: 300 };
+    return { w: 100, h: 300, thickness: 2 };
   }
 
   getGeometry(shape: ThreeTurnShape) {
@@ -75,7 +78,7 @@ export class ThreeTurnShapeUtil extends ShapeUtil<any> {
           <path
             d={`M ${startX} ${startY} C ${control1X} ${control1Y} ${control2X} ${control2Y} ${middleX} ${middleY} M ${middleX} ${middleY} C ${control3X} ${control3Y} ${control4X} ${control4Y} ${endX} ${endY}`}
             stroke="currentColor"
-            strokeWidth="2"
+            strokeWidth={shape.props.thickness}
             fill="none"
           />
         </svg>

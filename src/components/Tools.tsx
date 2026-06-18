@@ -25,13 +25,27 @@ class PlaceShapeTool extends StateNode {
   override onPointerDown(_info: TLPointerEventInfo) {
     const point = this.editor.inputs.currentPagePoint;
 
+    // ThreeTurn thickness input:
+    // Shift = thick, Alt = thin, default = medium.
+    const threeTurnThickness = this.editor.inputs.shiftKey
+      ? 4
+      : this.editor.inputs.altKey
+        ? 1
+        : 2;
+
+    const baseProps = { w: 120, h: 100 };
+    const props =
+      this.targetShapeType === "three-turn"
+        ? { ...baseProps, thickness: threeTurnThickness }
+        : baseProps;
+
     this.editor.createShapes([
       {
         id: createShapeId(),
         type: this.targetShapeType as any,
         x: point.x - 60,
         y: point.y - 50,
-        props: { w: 120, h: 100 },
+        props,
       },
     ]);
 
