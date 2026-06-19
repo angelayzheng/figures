@@ -1,6 +1,8 @@
+import example from "../assets/example.svg";
+
 function Home() {
   return (
-    <section className="flex min-h-[calc(100vh-73px)] w-full flex-col items-center justify-center gap-8 px-6 py-10">
+    <section className="flex w-full flex-col items-center justify-center gap-8 px-6 py-2">
       <h1 className="font-display text-accent text-center text-[10em]">
         FigureS
       </h1>
@@ -10,8 +12,15 @@ function Home() {
         </p>
         <p className="mx-auto max-w-5xl text-center text-lg">
           Draw clusters and ice dance patterns, annotate them with text, and
-          export them as SVGs to share with others..
+          export them as SVGs to share with others.
         </p>
+      </div>
+
+      <div>
+        <p className="mb-4 text-center text-lg font-semibold">
+          Example of a turn cluster:
+        </p>
+        <img src={example} alt="Description of image" />
       </div>
 
       <footer className="mx-auto flex max-w-xl flex-col gap-4 text-center text-sm">
