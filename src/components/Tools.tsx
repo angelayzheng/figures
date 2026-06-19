@@ -124,10 +124,22 @@ export const customUiComponents: TLComponents = {
 
     return (
       <DefaultToolbar {...props}>
-        <TldrawUiMenuItem {...tools["three-turn"]} />
-        <TldrawUiMenuItem {...tools.bracket} />
-        <TldrawUiMenuItem {...tools.rocker} />
-        <TldrawUiMenuItem {...tools.counter} />
+        <TldrawUiMenuItem
+          {...tools["three-turn"]}
+          icon={<div className="text-sm font-semibold">3</div>}
+        />
+        <TldrawUiMenuItem
+          {...tools.bracket}
+          icon={<div className="text-sm font-semibold">B</div>}
+        />
+        <TldrawUiMenuItem
+          {...tools.rocker}
+          icon={<div className="text-sm font-semibold">R</div>}
+        />
+        <TldrawUiMenuItem
+          {...tools.counter}
+          icon={<div className="text-sm font-semibold">C</div>}
+        />
         <DefaultToolbarContent />
       </DefaultToolbar>
     );

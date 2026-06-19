@@ -17,7 +17,13 @@ const shapeUtils = [
 
 export default function Canvas() {
   return (
-    <div style={{ position: "fixed", inset: 0 }}>
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        height: "calc(100vh - 72px)",
+      }}
+    >
       <Tldraw
         licenseKey="tldraw-2026-09-24/WyJkRFlpcThtcyIsWyIqIl0sMTYsIjIwMjYtMDktMjQiXQ.tnKquhMOt9+8N9UY5c0k9P7WVaFm41ryaIFoGmuq0LKYI4KcvVYKouLasay4BEZNGAhkeHs86+aWJssm8/M8fQ"
         shapeUtils={shapeUtils}
