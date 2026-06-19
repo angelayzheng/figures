@@ -1,6 +1,5 @@
 import {
   DefaultColorStyle,
-  DefaultFontStyle,
   DefaultSizeStyle,
   DefaultTextAlignStyle,
   DefaultToolbar,
@@ -16,10 +15,7 @@ import {
 import { toRichText } from "@tldraw/tlschema";
 
 class PlaceShapeTool extends StateNode {
-  static override initial = "idle";
-  static override children() {
-    return [];
-  }
+  static override id = "place-shape";
 
   shapeType = "geo";
 
