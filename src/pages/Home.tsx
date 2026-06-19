@@ -1,20 +1,23 @@
 function Home() {
   return (
-    <section className="h-full px-6 py-10 flex flex-col justify-center gap-8">
-      <h1 className="font-display text-[10em] text-center">FigureS</h1>
-      <div className="flex flex-col gap-2">
-        <p className="text-center text-lg max-w-5xl mx-auto">
-          A simple drawing app, customized for figure skaters and coaches.
+    <section className="flex min-h-[calc(100vh-73px)] w-full flex-col items-center justify-center gap-8 px-6 py-10">
+      <h1 className="font-display text-accent text-center text-[10em]">
+        FigureS
+      </h1>
+      <div className="flex max-w-5xl flex-col gap-2">
+        <p className="mx-auto max-w-5xl text-center text-lg">
+          A simple drawing app customized for figure skaters and coaches.
         </p>
-        <p className="text-center text-lg max-w-5xl mx-auto">
+        <p className="mx-auto max-w-5xl text-center text-lg">
           Draw clusters and ice dance patterns, annotate them with text, and
           export them as SVGs to share with others..
         </p>
       </div>
 
-      <footer className="text-center text-sm max-w-2xl flex flex-col gap-4 mx-auto">
+      <footer className="mx-auto flex max-w-xl flex-col gap-4 text-center text-sm">
         <p>
-          FigureS: short for Figure Skating, inspired by{" "}
+          <span className="font-bold">FigureS</span>: short for Figure Skating,
+          inspired by{" "}
           <a
             href="https://en.wikipedia.org/wiki/Compulsory_figures"
             target="_blank"
