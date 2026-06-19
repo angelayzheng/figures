@@ -340,6 +340,8 @@ export class RockerShapeUtil extends ShapeUtil<any> {
   getGeometry(shape: RockerShape) {
     const { w, h } = shape.props;
     const angle = (30 / 180) * Math.PI;
+    const minX = w * 0.25;
+    const maxX = w * 0.75;
 
     const startX = w * 0.5;
     const startY = h;
@@ -373,6 +375,10 @@ export class RockerShapeUtil extends ShapeUtil<any> {
       )
       .cubicBezierTo(mid2X, mid2Y, control3X, control3Y, control4X, control4Y)
       .lineTo(endX, endY)
+      .moveTo(minX, 0)
+      .lineTo(minX, h)
+      .moveTo(maxX, 0)
+      .lineTo(maxX, h)
       .toGeometry();
   }
 
@@ -486,6 +492,8 @@ export class CounterShapeUtil extends ShapeUtil<any> {
   getGeometry(shape: CounterShape) {
     const { w, h } = shape.props;
     const angle = (30 / 180) * Math.PI;
+    const minX = w * 0.25;
+    const maxX = w * 0.75;
 
     const startX = w * 0.5;
     const startY = 0;
@@ -519,6 +527,10 @@ export class CounterShapeUtil extends ShapeUtil<any> {
       )
       .cubicBezierTo(mid2X, mid2Y, control3X, control3Y, control4X, control4Y)
       .lineTo(endX, endY)
+      .moveTo(minX, 0)
+      .lineTo(minX, h)
+      .moveTo(maxX, 0)
+      .lineTo(maxX, h)
       .toGeometry();
   }
 
