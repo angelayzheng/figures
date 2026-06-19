@@ -1,24 +1,73 @@
 import {
+  DefaultColorStyle,
+  DefaultSizeStyle,
   HTMLContainer,
   PathBuilder,
+  T,
   type TLBaseShape,
+  type TLDefaultColorStyle,
+  type TLDefaultSizeStyle,
   ShapeUtil,
   type TLResizeInfo,
 } from "tldraw";
+import { getColorValue } from "@tldraw/editor";
 
 type ThreeTurnShape = TLBaseShape<
   "three-turn",
-  { w: number; h: number; thickness: number }
+  {
+    w: number;
+    h: number;
+    thickness: number;
+    color: TLDefaultColorStyle;
+    size: TLDefaultSizeStyle;
+  }
 >;
-type BracketShape = TLBaseShape<"bracket", { w: number; h: number }>;
-type RockerShape = TLBaseShape<"rocker", { w: number; h: number }>;
-type CounterShape = TLBaseShape<"counter", { w: number; h: number }>;
+type BracketShape = TLBaseShape<
+  "bracket",
+  { w: number; h: number; color: TLDefaultColorStyle; size: TLDefaultSizeStyle }
+>;
+type RockerShape = TLBaseShape<
+  "rocker",
+  { w: number; h: number; color: TLDefaultColorStyle; size: TLDefaultSizeStyle }
+>;
+type CounterShape = TLBaseShape<
+  "counter",
+  { w: number; h: number; color: TLDefaultColorStyle; size: TLDefaultSizeStyle }
+>;
+
+const getStrokeWidth = (size: TLDefaultSizeStyle) => {
+  switch (size) {
+    case "s":
+      return 1.5;
+    case "m":
+      return 2.5;
+    case "l":
+      return 3.5;
+    case "xl":
+      return 5;
+    default:
+      return 2.5;
+  }
+};
 
 export class ThreeTurnShapeUtil extends ShapeUtil<any> {
   static override type = "three-turn" as const;
+  static override props = {
+    w: T.number,
+    h: T.number,
+    thickness: T.number,
+    color: DefaultColorStyle,
+    size: DefaultSizeStyle,
+  };
 
   getDefaultProps(): ThreeTurnShape["props"] {
-    return { w: 100, h: 300, thickness: 2 };
+    return {
+      w: 100,
+      h: 300,
+      thickness: 2,
+      color: this.editor.getStyleForNextShape(DefaultColorStyle),
+      size: this.editor.getStyleForNextShape(DefaultSizeStyle),
+    };
   }
 
   getGeometry(shape: ThreeTurnShape) {
@@ -68,14 +117,19 @@ export class ThreeTurnShapeUtil extends ShapeUtil<any> {
     const control4Y = h - control1Y;
     const endX = 0;
     const endY = h;
+    const strokeWidth =
+      getStrokeWidth(shape.props.size) * (shape.props.thickness / 2);
+    const colors =
+      this.editor.getCurrentTheme().colors[this.editor.getColorMode()];
+    const stroke = getColorValue(colors, shape.props.color ?? "black", "solid");
 
     return (
       <HTMLContainer style={{ width: w, height: h }}>
         <svg viewBox={`0 0 ${w} ${h}`} width="100%" height="100%">
           <path
             d={`M ${startX} ${startY} C ${control1X} ${control1Y} ${control2X} ${control2Y} ${middleX} ${middleY} M ${middleX} ${middleY} C ${control3X} ${control3Y} ${control4X} ${control4Y} ${endX} ${endY}`}
-            stroke="currentColor"
-            strokeWidth={shape.props.thickness}
+            stroke={stroke}
+            strokeWidth={strokeWidth}
             fill="none"
           />
         </svg>
@@ -134,9 +188,20 @@ export class ThreeTurnShapeUtil extends ShapeUtil<any> {
 
 export class BracketShapeUtil extends ShapeUtil<any> {
   static override type = "bracket" as const;
+  static override props = {
+    w: T.number,
+    h: T.number,
+    color: DefaultColorStyle,
+    size: DefaultSizeStyle,
+  };
 
   getDefaultProps(): BracketShape["props"] {
-    return { w: 200, h: 200 };
+    return {
+      w: 200,
+      h: 200,
+      color: this.editor.getStyleForNextShape(DefaultColorStyle),
+      size: this.editor.getStyleForNextShape(DefaultSizeStyle),
+    };
   }
 
   getGeometry(shape: BracketShape) {
@@ -186,14 +251,18 @@ export class BracketShapeUtil extends ShapeUtil<any> {
     const control4Y = h - control1Y;
     const endX = 0;
     const endY = h;
+    const strokeWidth = getStrokeWidth(shape.props.size);
+    const colors =
+      this.editor.getCurrentTheme().colors[this.editor.getColorMode()];
+    const stroke = getColorValue(colors, shape.props.color ?? "black", "solid");
 
     return (
       <HTMLContainer style={{ width: w, height: h }}>
         <svg viewBox={`0 0 ${w} ${h}`} width="100%" height="100%">
           <path
             d={`M ${startX} ${startY} C ${control1X} ${control1Y} ${control2X} ${control2Y} ${middleX} ${middleY} C ${control3X} ${control3Y} ${control4X} ${control4Y} ${endX} ${endY}`}
-            stroke="currentColor"
-            // strokeWidth={shape.props.thickness}
+            stroke={stroke}
+            strokeWidth={strokeWidth}
             fill="none"
           />
         </svg>
@@ -252,9 +321,20 @@ export class BracketShapeUtil extends ShapeUtil<any> {
 
 export class RockerShapeUtil extends ShapeUtil<any> {
   static override type = "rocker" as const;
+  static override props = {
+    w: T.number,
+    h: T.number,
+    color: DefaultColorStyle,
+    size: DefaultSizeStyle,
+  };
 
   getDefaultProps(): RockerShape["props"] {
-    return { w: 200, h: 200 };
+    return {
+      w: 200,
+      h: 200,
+      color: this.editor.getStyleForNextShape(DefaultColorStyle),
+      size: this.editor.getStyleForNextShape(DefaultSizeStyle),
+    };
   }
 
   getGeometry(shape: RockerShape) {
@@ -319,14 +399,18 @@ export class RockerShapeUtil extends ShapeUtil<any> {
     const mid2Y = h * (0.25 + 0.25 * Math.cos(angle));
     const endX = w * 0.5;
     const endY = 0;
+    const strokeWidth = getStrokeWidth(shape.props.size);
+    const colors =
+      this.editor.getCurrentTheme().colors[this.editor.getColorMode()];
+    const stroke = getColorValue(colors, shape.props.color ?? "black", "solid");
 
     return (
       <HTMLContainer style={{ width: w, height: h }}>
         <svg viewBox={`0 0 ${w} ${h}`} width="100%" height="100%">
           <path
             d={`M ${startX} ${startY} A ${radius} ${radius} 0 0 1 ${mid1X} ${mid1Y} C ${control1X} ${control1Y}, ${control2X} ${control2Y}, ${middleX} ${middleY} C ${control3X} ${control3Y}, ${control4X} ${control4Y}, ${mid2X} ${mid2Y} A ${radius} ${radius} -30 0 0 ${endX} ${endY}`}
-            stroke="currentColor"
-            // strokeWidth={shape.props.thickness}
+            stroke={stroke}
+            strokeWidth={strokeWidth}
             fill="none"
           />
         </svg>
@@ -383,9 +467,20 @@ export class RockerShapeUtil extends ShapeUtil<any> {
 
 export class CounterShapeUtil extends ShapeUtil<any> {
   static override type = "counter" as const;
+  static override props = {
+    w: T.number,
+    h: T.number,
+    color: DefaultColorStyle,
+    size: DefaultSizeStyle,
+  };
 
   getDefaultProps(): CounterShape["props"] {
-    return { w: 200, h: 200 };
+    return {
+      w: 200,
+      h: 200,
+      color: this.editor.getStyleForNextShape(DefaultColorStyle),
+      size: this.editor.getStyleForNextShape(DefaultSizeStyle),
+    };
   }
 
   getGeometry(shape: CounterShape) {
@@ -450,14 +545,18 @@ export class CounterShapeUtil extends ShapeUtil<any> {
     const mid2Y = h - mid1Y;
     const endX = w * 0.5;
     const endY = h;
+    const strokeWidth = getStrokeWidth(shape.props.size);
+    const colors =
+      this.editor.getCurrentTheme().colors[this.editor.getColorMode()];
+    const stroke = getColorValue(colors, shape.props.color ?? "black", "solid");
 
     return (
       <HTMLContainer style={{ width: w, height: h }}>
         <svg viewBox={`0 0 ${w} ${h}`} width="100%" height="100%">
           <path
             d={`M ${startX} ${startY} A ${radius} ${radius} 0 0 1 ${mid1X} ${mid1Y} C ${control1X} ${control1Y}, ${control2X} ${control2Y}, ${middleX} ${middleY} C ${control3X} ${control3Y}, ${control4X} ${control4Y}, ${mid2X} ${mid2Y} A ${radius} ${radius} -30 0 0 ${endX} ${endY}`}
-            stroke="currentColor"
-            // strokeWidth={shape.props.thickness}
+            stroke={stroke}
+            strokeWidth={strokeWidth}
             fill="none"
           />
         </svg>

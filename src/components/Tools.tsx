@@ -1,4 +1,6 @@
 import {
+  DefaultColorStyle,
+  DefaultSizeStyle,
   DefaultToolbar,
   DefaultToolbarContent,
   StateNode,
@@ -16,7 +18,7 @@ class PlaceShapeTool extends StateNode {
     return [];
   }
 
-  targetShapeType = "geo";
+  shapeType = "geo";
 
   override onEnter() {
     this.editor.setCursor({ type: "cross", rotation: 0 });
@@ -33,16 +35,21 @@ class PlaceShapeTool extends StateNode {
         ? 1
         : 2;
 
-    const baseProps = { w: 120, h: 100 };
+    const baseProps = {
+      w: 120,
+      h: 100,
+      color: this.editor.getStyleForNextShape(DefaultColorStyle),
+      size: this.editor.getStyleForNextShape(DefaultSizeStyle),
+    };
     const props =
-      this.targetShapeType === "three-turn"
+      this.shapeType === "three-turn"
         ? { ...baseProps, thickness: threeTurnThickness }
         : baseProps;
 
     this.editor.createShapes([
       {
         id: createShapeId(),
-        type: this.targetShapeType as any,
+        type: this.shapeType as any,
         x: point.x - 60,
         y: point.y - 50,
         props,
@@ -55,22 +62,22 @@ class PlaceShapeTool extends StateNode {
 
 export class ThreeTurnTool extends PlaceShapeTool {
   static override id = "three-turn";
-  override targetShapeType = "three-turn";
+  override shapeType = "three-turn";
 }
 
 export class BracketTool extends PlaceShapeTool {
   static override id = "bracket";
-  override targetShapeType = "bracket";
+  override shapeType = "bracket";
 }
 
 export class RockerTool extends PlaceShapeTool {
   static override id = "rocker";
-  override targetShapeType = "rocker";
+  override shapeType = "rocker";
 }
 
 export class CounterTool extends PlaceShapeTool {
   static override id = "counter";
-  override targetShapeType = "counter";
+  override shapeType = "counter";
 }
 
 export const customTools = [
