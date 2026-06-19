@@ -1,6 +1,8 @@
 import {
   DefaultColorStyle,
+  DefaultFontStyle,
   DefaultSizeStyle,
+  DefaultTextAlignStyle,
   DefaultToolbar,
   DefaultToolbarContent,
   StateNode,
@@ -11,6 +13,7 @@ import {
   type TLPointerEventInfo,
   useTools,
 } from "tldraw";
+import { toRichText } from "@tldraw/tlschema";
 
 class PlaceShapeTool extends StateNode {
   static override initial = "idle";
@@ -25,15 +28,7 @@ class PlaceShapeTool extends StateNode {
   }
 
   override onPointerDown(_info: TLPointerEventInfo) {
-    const point = this.editor.inputs.currentPagePoint;
-
-    // ThreeTurn thickness input:
-    // Shift = thick, Alt = thin, default = medium.
-    const threeTurnThickness = this.editor.inputs.shiftKey
-      ? 4
-      : this.editor.inputs.altKey
-        ? 1
-        : 2;
+    const point = this.editor.inputs.getCurrentPagePoint();
 
     const baseProps = {
       w: 120,
@@ -41,20 +36,49 @@ class PlaceShapeTool extends StateNode {
       color: this.editor.getStyleForNextShape(DefaultColorStyle),
       size: this.editor.getStyleForNextShape(DefaultSizeStyle),
     };
-    const props =
-      this.shapeType === "three-turn"
-        ? { ...baseProps, thickness: threeTurnThickness }
-        : baseProps;
+    const props = baseProps;
+
+    const turnId = createShapeId();
+    const textId = createShapeId();
+    const turnLabelByType: Record<string, string> = {
+      "three-turn": "LFO3",
+      bracket: "LFO-Br",
+      rocker: "RFO-Rk",
+      counter: "RFO-Ctr",
+    };
+    const label = turnLabelByType[this.shapeType] ?? "Turn";
 
     this.editor.createShapes([
       {
-        id: createShapeId(),
+        id: turnId,
         type: this.shapeType as any,
         x: point.x - 60,
         y: point.y - 50,
         props,
       },
+      {
+        id: textId,
+        type: "text",
+        x: point.x - 24,
+        y: point.y - 46,
+        props: {
+          color: this.editor.getStyleForNextShape(DefaultColorStyle),
+          size: "s",
+          font: "sans",
+          textAlign: this.editor.getStyleForNextShape(DefaultTextAlignStyle),
+          richText: toRichText(label),
+          w: 80,
+          scale: 0.8,
+          autoSize: true,
+        },
+      },
     ]);
+
+    const turnShape = this.editor.getShape(turnId);
+    const textShape = this.editor.getShape(textId);
+    if (turnShape && textShape) {
+      this.editor.groupShapes([turnShape, textShape]);
+    }
 
     this.editor.setCurrentTool("select");
   }

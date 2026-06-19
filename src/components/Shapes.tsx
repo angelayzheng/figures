@@ -17,7 +17,6 @@ type ThreeTurnShape = TLBaseShape<
   {
     w: number;
     h: number;
-    thickness: number;
     color: TLDefaultColorStyle;
     size: TLDefaultSizeStyle;
   }
@@ -55,7 +54,6 @@ export class ThreeTurnShapeUtil extends ShapeUtil<any> {
   static override props = {
     w: T.number,
     h: T.number,
-    thickness: T.number,
     color: DefaultColorStyle,
     size: DefaultSizeStyle,
   };
@@ -64,7 +62,6 @@ export class ThreeTurnShapeUtil extends ShapeUtil<any> {
     return {
       w: 100,
       h: 300,
-      thickness: 2,
       color: this.editor.getStyleForNextShape(DefaultColorStyle),
       size: this.editor.getStyleForNextShape(DefaultSizeStyle),
     };
@@ -117,8 +114,7 @@ export class ThreeTurnShapeUtil extends ShapeUtil<any> {
     const control4Y = h - control1Y;
     const endX = 0;
     const endY = h;
-    const strokeWidth =
-      getStrokeWidth(shape.props.size) * (shape.props.thickness / 2);
+    const strokeWidth = getStrokeWidth(shape.props.size);
     const colors =
       this.editor.getCurrentTheme().colors[this.editor.getColorMode()];
     const stroke = getColorValue(colors, shape.props.color ?? "black", "solid");
